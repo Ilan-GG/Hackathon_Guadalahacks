@@ -47,9 +47,12 @@ Key technologies used:
 4. **Configure the API Keys**:
    Add your HERE Maps API key in satellite_imagery_tile_request.py
 6. **Run the pipeline**:
+   ```bash
+   node classifyPOIs.js
+   node data.js  
 
 ## 📊 Key Features
-- ** POI Classification **
+1. **POI Classification**
 
 - **Scenario 1**: No POI in reality 
 - **Scenario 2**: Incorrect POI position
@@ -57,12 +60,12 @@ Key technologies used:
 - **Scenario 4**: Valid POI
 - **Additional solution**: Export duplicates POI's
 
-- ** Satellite Analysis **
+2. **Satellite Analysis**
 
 - Detects structures on both sides of roads  
 - Validates POI existence based on imagery  
 
-- ** Duplicate Detection **
+3. **Duplicate Detection**
 
 - Identifies POIs with identical coordinates/names  
 - Exports duplicates to CSV  
