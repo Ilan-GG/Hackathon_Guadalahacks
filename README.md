@@ -33,3 +33,19 @@ Key technologies used:
   - XLSX (Excel export)
 - **APIs**: 
   - HERE Maps API
+    
+  ## 🚀 Installation & Usage
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Ilan-GG/Hackathon_Guadalahacks.git
+   cd Hackathon_Guadalahacks
+2. **Install dependencies**:
+   ```bash
+   npm install @turf/turf xlsx
+   pip install opencv-python scipy pandas geopandas
+4. **Configure the API Keys**:
+   Add your HERE Maps API key in satellite_imagery_tile_request.py
+6. **Run the pipeline**:
+
+## 📊 Key Features
