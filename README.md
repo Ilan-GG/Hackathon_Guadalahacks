@@ -1,8 +1,8 @@
-# Hackathon Guadalahacks Project 🌍
+# Satellite Viewer for Spatial Inspection 🌍
 
 **Sponsored by HERE Technologies**
 
-This repository contains a geospatial data validation system developed for HERE Technologies during the **Guadalahacks Hackathon**. The project focuses on automating quality assurance for Points of Interest (POI) data by validating their positional accuracy and attributes against HERE’s street network and satellite imagery.
+This repository contains a geospatial data validation system developed for HERE Technologies company during the **Guadalahacks Hackathon**. The project focuses on automating quality assurance for Points of Interest (POI) data by validating their positional accuracy and attributes against HERE’s street network and satellite imagery.
 
 ## 📌 Project Description
 
@@ -75,5 +75,12 @@ Key technologies used:
 
 - `POI_Scenarios.xlsx`: Excel file with POIs categorized by scenario  
 - `repeatedData_POI_4815075.csv`: List of duplicate POIs  
-- `satellite_tile.png`: Marked-up satellite imagery with POI locations  
+- `satellite_tile.png`: Marked-up satellite imagery with POI locations
+
+**Team:**
+- Ilan Gómez Guerrero
+- María Guadalupe Soto Acosta
+- Jimena Díaz Franco
+
+**Created at Guadalahacks Hackathon**
 
