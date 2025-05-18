@@ -2,29 +2,13 @@ import pandas as pd
 import geopandas as gpd
 import requests
 import math
+import csv
 
 from PIL import Image, ImageDraw
 
-poi_gdf = gpd.read_file("POIs\POI_4815075_1.geojson")
-roads_gdf = gpd.read_file("STREETS_NAV\SREETS_NAV_4815075.geojson")
-
-poi_gdf = poi_gdf.to_crs(epsg=4326)
-roads_gdf = roads_gdf.to_crs(epsg=4326)
-
-item = 40
-
-longitude, latitude = poi_gdf.geometry.iloc[item].x, poi_gdf.geometry.iloc[item].y
-
-link_id = poi_gdf.iloc[item]["LINK_ID"] if "LINK_ID" in poi_gdf.columns else poi_gdf.iloc[item]["link_id"]
-
-# Buscar la geometría correspondiente en STREET
-line = roads_gdf[roads_gdf["link_id"] == link_id].geometry.values[0]
-
-
-start_point = line.coords[0]       # (lon, lat)
-end_point = line.coords[-1]        # (lon, lat)
-
-all_points = list(line.coords)
+##########################################################
+### SATELLITE TILE
+##########################################################
 
 def lat_lon_to_tile(lat, lon, zoom):
     """
@@ -72,9 +56,7 @@ def create_wkt_polygon(bounds):
 }
     return wkt
 
-
-
-def get_satellite_tile(lat,lon,zoom,tile_format,api_key):
+def get_satellite_tile(lat,lon,zoom,tile_format,api_key,poi_id):
 
     x,y =lat_lon_to_tile(lat, lon, zoom)
 
@@ -88,7 +70,7 @@ def get_satellite_tile(lat,lon,zoom,tile_format,api_key):
     # Check if the request was successful
     if response.status_code == 200:
         # Save the tile to a file
-        with open(f'satellite_tile.{tile_format}', 'wb') as file:
+        with open(f'satellite_tile_{poi_id}.{tile_format}', 'wb') as file:
             file.write(response.content)
         print('Tile saved successfully.')
     else:
@@ -99,7 +81,7 @@ def get_satellite_tile(lat,lon,zoom,tile_format,api_key):
     return wkt_polygon
 
 ##########################################################
-### Image Markers
+### IMAGE MARKERS
 ##########################################################
 
 def plot_marker_on_image(image_path, corners, marker_lat_lon, output_path,color):
@@ -198,80 +180,131 @@ def plot_points_and_line(
 
 # STREET: { "type": "Feature", "properties": { "AR_AUTO": "Y", "AR_BUS": "Y", "AR_CARPOOL": "Y", "AR_DELIV": "Y", "AR_EMERVEH": "Y", "AR_MOTOR": "Y", "AR_PEDEST": "Y", "AR_TAXIS": "Y", "AR_TRAFF": "Y", "AR_TRUCKS": "Y", "BRIDGE": "N", "CONTRACC": "N", "COVERIND": "N0", "DIR_TRAVEL": "T", "DIVIDER": "N", "FERRY_TYPE": "H", "FROM_LANES": 0, "FRONTAGE": "Y", "FR_SPD_LIM": 0, "FUNC_CLASS": "4", "INDESCRIB": "N", "INTERINTER": "N", "LANE_CAT": "2", "link_id": 939199332, "LOW_MBLTY": "3", "MANOEUVRE": "N", "MULTIDIGIT": "N", "PAVED": "Y", "POIACCESS": "N", "PRIORITYRD": "N", "PRIVATE": "N", "PUB_ACCESS": "Y", "RAMP": "N", "ROUNDABOUT": "N", "SPEED_CAT": "6", "TOLLWAY": "N", "TO_LANES": 0, "TO_SPD_LIM": 40, "TUNNEL": "N", "UNDEFTRAFF": "N", "URBAN": "Y" }, "geometry": { "type": "LineString", "coordinates": [ [ -99.64464, 19.27013 ], [ -99.64272, 19.27055 ] ] } },
 
-# Define the parameters for the tile request
-api_key = '<API KEY>'
-#latitude = 19.27055
-#longitude = -99.64272
-zoom_level = 17  # Zoom level
-tile_size = 512  # Tile size in pixels
-tile_format = 'png'  # Tile format
-print(f"Latitud: {latitude}, Longitud: {longitude}")
 
-# Execute request and save tile
-corners = get_satellite_tile(latitude,longitude,zoom_level,tile_format,api_key)
-print(corners)
 
-# Street Marker
+poi_gdf = gpd.read_file("POIs\POI_4815075_1.geojson")
+roads_gdf = gpd.read_file("STREETS_NAV\SREETS_NAV_4815075.geojson")
 
-#points = [ [ 19.27013, -99.64464 ], [19.27055, -99.64272 ] ]
-#points = [[start_point[1], start_point[0]], [end_point[1], end_point[0]]]
-pointA = all_points[0]
-pointB = all_points[1]
+poi_gdf = poi_gdf.to_crs(epsg=4326)
+roads_gdf = roads_gdf.to_crs(epsg=4326)
 
-latref = pointA[1]
-lonref = pointA[0]
+item = 40
 
-while(len(all_points)>=2):
-    print("Puntos extraídos:", all_points)
+for item in range(len(poi_gdf)):
 
-    plot_points_and_line(
-        "satellite_tile.png",
+    longitude, latitude = poi_gdf.geometry.iloc[item].x, poi_gdf.geometry.iloc[item].y
+
+    link_id = poi_gdf.iloc[item]["LINK_ID"] if "LINK_ID" in poi_gdf.columns else poi_gdf.iloc[item]["link_id"]
+
+    # Buscar la geometría correspondiente en STREET
+    line = roads_gdf[roads_gdf["link_id"] == link_id].geometry.values[0]
+
+
+    start_point = line.coords[0]       # (lon, lat)
+    end_point = line.coords[-1]        # (lon, lat)
+
+    all_points = list(line.coords)
+
+    poi_id = poi_gdf.iloc[item]['POI_ID']
+
+    # Define the parameters for the tile request
+    api_key = '<API KEY>'
+
+    zoom_level = 17  # Zoom level
+    tile_size = 512  # Tile size in pixels
+    tile_format = 'png'  # Tile format
+
+    # Execute request and save tile
+    corners = get_satellite_tile(latitude,longitude,zoom_level,tile_format,api_key,poi_id)
+    #print(corners)
+
+    # Street Marker
+    pointA = all_points[0]
+    pointB = all_points[1]
+
+    latref = pointA[1]
+    lonref = pointA[0]
+
+    while(len(all_points)>=2):
+        print("Puntos extraídos:", all_points)
+
+        plot_points_and_line(
+            f'satellite_tile_{poi_id}.{tile_format}',
+            corners,
+            pointA,
+            pointB,
+            f'satellite_tile_{poi_id}.{tile_format}'
+        )
+        
+        all_points.pop(0)
+        if(len(all_points)!=1):
+            pointA = all_points[0]
+            pointB = all_points[1]
+
+
+    plot_marker_on_image(
+        f'satellite_tile_{poi_id}.{tile_format}',
         corners,
-        pointA,
-        pointB,
-        "satellite_tile.png"
+        (latitude,longitude),
+        f'satellite_tile_{poi_id}.{tile_format}',
+        'red'
     )
-    
-    all_points.pop(0)
-    if(len(all_points)!=1):
-        pointA = all_points[0]
-        pointB = all_points[1]
+    plot_marker_on_image(
+        f'satellite_tile_{poi_id}.{tile_format}',
+        corners,
+        (latref,lonref),
+        f'satellite_tile_{poi_id}.{tile_format}',
+        'purple'
+    )
 
+    import image_analyzer as image_analyzer
 
-plot_marker_on_image(
-    'satellite_tile.png',
-    corners,
-    (latitude,longitude),
-    'satellite_tile.png',
-    'red'
-)
-plot_marker_on_image(
-    'satellite_tile.png',
-    corners,
-    (latref,lonref),
-    'satellite_tile.png',
-    'purple'
-)
+    r_ref,l_ref = image_analyzer.analyze('satellite_tile.png')
 
-import image_analyzer as image_analyzer
+    poi_ref = poi_gdf.iloc[item]['POI_ST_SD']
 
-r_ref,l_ref = image_analyzer.analyze('satellite_tile.png')
-
-poi_ref = poi_gdf.iloc[item]['POI_ST_SD']
-
-if (poi_ref == 'L'):
-    if(l_ref):
-        print("Case 4, it exists")
+    if (poi_ref == 'L'):
+        if(l_ref):
+            scenario = '4'
+            reason = 'There a structure in the POI position'
+        else:
+            if(r_ref):
+                scenario = '2'
+                reason = 'There is no structure in assigned side of the road, but there the possibility of being assigned to the wrong side'
+            else:
+                scenario = '1'
+                reason = 'There is not structure to back its existence'
     else:
         if(r_ref):
-            print("Case 2, it is possibly in the other side")
+            scenario = '4'
+            reason = 'There a structure in the POI position'
         else:
-            print("Case 1, It possibly doesn't exist")
-else:
-    if(r_ref):
-        print("Case 4, it exists")
-    else:
-        if(l_ref):
-            print("Case 2, it is possibly in the other side")
-        else:
-            print("Case 1, It possibly doesn't exist")
+            if(l_ref):
+                scenario = '2'
+                reason = 'There is no structure in assigned side of the road, but there the possibility of being assigned to the wrong side'
+            else:
+                scenario = '1'
+                reason = 'There is not structure to back its existence'
+
+    data = [
+        {'POI_ID': poi_gdf.iloc[item]['POI_ID'],
+        'LINK_ID': link_id ,
+        'POI_NAME': poi_gdf.iloc[item]['POI_NAME'],
+        'ST_NAME': poi_gdf.iloc[item]['ST_NAME'],
+        'POI_ST_SD': poi_gdf.iloc[item]['POI_ST_SD'],
+        'scenario': scenario,
+        'reason': reason
+        }
+    ]
+    # print(data)
+
+
+
+    with open('POI_SatelliteAnalysis.csv','a',newline='') as file:
+        fieldnames = ['POI_ID','LINK_ID','POI_NAME','ST_NAME','POI_ST_SD','scenario','reason']
+        writer = csv.DictWriter(file, fieldnames=fieldnames)
+
+        if file.tell() == 0:
+            writer.writeheader()
+
+        writer.writerow(data[0])
