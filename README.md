@@ -58,7 +58,6 @@ Key technologies used:
 - **Scenario 2**: Incorrect POI position
 - **Scenario 3**: Incorrect Multiply Digitised attribution
 - **Scenario 4**: Valid POI
-- **Additional solution**: Export duplicates POI's
 
 2. **Satellite Analysis**
 
