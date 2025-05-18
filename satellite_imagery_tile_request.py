@@ -70,7 +70,7 @@ def get_satellite_tile(lat,lon,zoom,tile_format,api_key,poi_id):
     # Check if the request was successful
     if response.status_code == 200:
         # Save the tile to a file
-        with open(f'satellite_tile_{poi_id}.{tile_format}', 'wb') as file:
+        with open(f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}', 'wb') as file:
             file.write(response.content)
         print('Tile saved successfully.')
     else:
@@ -229,11 +229,11 @@ for item in range(len(poi_gdf)):
         print("Puntos extraídos:", all_points)
 
         plot_points_and_line(
-            f'satellite_tile_{poi_id}.{tile_format}',
+            f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}',
             corners,
             pointA,
             pointB,
-            f'satellite_tile_{poi_id}.{tile_format}'
+            f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}'
         )
         
         all_points.pop(0)
@@ -243,23 +243,28 @@ for item in range(len(poi_gdf)):
 
 
     plot_marker_on_image(
-        f'satellite_tile_{poi_id}.{tile_format}',
+        f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}',
         corners,
         (latitude,longitude),
-        f'satellite_tile_{poi_id}.{tile_format}',
+        f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}',
         'red'
     )
     plot_marker_on_image(
-        f'satellite_tile_{poi_id}.{tile_format}',
+        f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}',
         corners,
         (latref,lonref),
-        f'satellite_tile_{poi_id}.{tile_format}',
+        f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}',
         'purple'
     )
 
     import satellite_imagery_analyzer as image_analyzer
 
-    r_ref,l_ref = image_analyzer.analyze('satellite_tile.png')
+    image_path = f'satellite_tiles\satellite_tile_{poi_id}.{tile_format}'
+    print(image_path)
+
+    r_ref,l_ref = image_analyzer.analyze(image_path)
+
+    #satellite_tiles\satellite_tile_1244439551.png
 
     poi_ref = poi_gdf.iloc[item]['POI_ST_SD']
 
