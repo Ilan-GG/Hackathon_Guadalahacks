@@ -49,3 +49,27 @@ Key technologies used:
 6. **Run the pipeline**:
 
 ## 📊 Key Features
+** POI Classification **
+
+- **Scenario 1**: No POI in reality 
+- **Scenario 2**: Incorrect POI position
+- **Scenario 3**: Incorrect Multiply Digitised attribution
+- **Scenario 4**: Valid POI
+- **Additional solution**: Export duplicates POI's
+
+** Satellite Analysis **
+
+- Detects structures on both sides of roads  
+- Validates POI existence based on imagery  
+
+** Duplicate Detection **
+
+- Identifies POIs with identical coordinates/names  
+- Exports duplicates to CSV  
+
+## 📄 Sample Outputs
+
+- `POI_Scenarios.xlsx`: Excel file with POIs categorized by scenario  
+- `repeatedData_POI_4815075.csv`: List of duplicate POIs  
+- `satellite_tile.png`: Marked-up satellite imagery with POI locations  
+
