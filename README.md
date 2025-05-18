@@ -1,16 +1,18 @@
-# Hackathon Guadalahacks Project 🌍
+# Satellite Viewer for Spatial Inspection 🌍
 
 **Sponsored by HERE Technologies**
 
-This repository contains a geospatial data validation system developed for HERE Technologies during the **Guadalahacks Hackathon**. The project focuses on automating quality assurance for Points of Interest (POI) data by validating their positional accuracy and attributes against HERE’s street network and satellite imagery.
+This repository contains a geospatial data validation system developed for HERE Technologies company during the **Guadalahacks Hackathon**. The project focuses on automating quality assurance for Points of Interest (POI) data by validating their positional accuracy and attributes against HERE’s street network and satellite imagery.
 
 ## 📌 Project Description
 
 The project focuses on:
-- **POI Validation**: Checking POI positions against street geometries using percentage-based references
-- **Satellite Imagery Analysis**: Detecting structures around POIs to validate their existence
-- **Data Classification**: Categorizing POIs into scenarios based on positional accuracy and naming consistency
-- **Duplicate Detection**: Identifying and reporting duplicate POI entries
+- **POI Validation**:
+Applies a series of deterministic validation rules (e.g., distance from interpolated point, street name mismatches, side orientation issues) to automatically flag POIs with potential violations and assign explanatory scenarios.
+- **Satellite Imagery Analysis**: Utilizes a Machine Learning model to detect structures surrounding POI locations, verifying their presence and enhancing positional accuracy.
+- **Data Classification**: Assigns POIs to predefined scenarios based on spatial accuracy and naming consistency.
+- **Duplicate Detection**: Automatically identifies and reports POIs with duplicate coordinates or names.
+- **Real-Time Feedback**: Produces output files summarizing validation results, classified scenarios, and detected duplicates for downstream review and correction.
 
 Key technologies used:
 - Geospatial processing with Turf.js and GeoJSON
@@ -21,7 +23,7 @@ Key technologies used:
 ## 🛠 Technologies Used
 
 - **Core**: 
-  - Node.js (JavaScript/TypeScript) 
+  - Node.js (JavaScript) 
   - Python (for image analysis)
 - **Geospatial**: 
   - Turf.js 
@@ -75,5 +77,12 @@ Key technologies used:
 
 - `POI_Scenarios.xlsx`: Excel file with POIs categorized by scenario  
 - `repeatedData_POI_4815075.csv`: List of duplicate POIs  
-- `satellite_tile.png`: Marked-up satellite imagery with POI locations  
+- `satellite_tile.png`: Marked-up satellite imagery with POI locations
+
+**Team:**
+- Ilan Gómez Guerrero
+- María Guadalupe Soto Acosta
+- Jimena Díaz Franco
+
+**Created at Guadalahacks Hackathon**
 
