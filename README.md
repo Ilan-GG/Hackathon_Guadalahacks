@@ -1,6 +1,8 @@
 # Hackathon Guadalahacks Project 🌍
 
-This repository contains a geospatial data processing pipeline for Points of Interest (POI) validation and classification for HERE Technologies Company, developed during the **Guadalahacks Hackathon**. The system validates POI locations against street networks using satellite imagery and geometric analysis.
+**Sponsored by HERE Technologies**
+
+This repository contains a geospatial data validation system developed for HERE Technologies during the **Guadalahacks Hackathon**. The project focuses on automating quality assurance for Points of Interest (POI) data by validating their positional accuracy and attributes against HERE’s street network and satellite imagery.
 
 ## 📌 Project Description
 
