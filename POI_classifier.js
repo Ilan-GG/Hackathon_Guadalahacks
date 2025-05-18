@@ -141,8 +141,8 @@ function determineThreshold(linkProperties) {
   const isUrban = String(linkProperties.URBAN).toUpperCase() === "Y";
   const isHighway = ["1", "2"].includes(String(linkProperties.FUNC_CLASS));
 
-  if (isHighway) return 50;
-  if (isUrban) return 10;
+  if (isHighway) return 70;
+  if (isUrban) return 30;
   return 25;
 }
 

@@ -38,7 +38,7 @@ Key technologies used:
 - **APIs**: 
   - HERE Maps API
     
-  ## 🚀 Installation & Usage
+## 🚀 Installation & Usage
 
 1. **Clone the repository**:
    ```bash
@@ -60,7 +60,7 @@ Key technologies used:
 
 - **Scenario 1**: No POI in reality 
 - **Scenario 2**: Incorrect POI position
-- **Scenario 3**: Incorrect Multiply Digitised attribution
+- **Scenario 3**: Name mismatch with street
 - **Scenario 4**: Valid POI
 
 2. **Satellite Analysis**
