@@ -5,7 +5,7 @@ import math
 
 from PIL import Image, ImageDraw
 
-poi_gdf = gpd.read_file("../POIs/POI_4815075.geojson")
+poi_gdf = gpd.read_file("../POIs/POI_4815075_1.geojson")
 roads_gdf = gpd.read_file("../STREETS_NAV/SREETS_NAV_4815075.geojson")
 
 poi_gdf = poi_gdf.to_crs(epsg=4326)
