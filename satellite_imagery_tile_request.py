@@ -257,7 +257,7 @@ for item in range(len(poi_gdf)):
         'purple'
     )
 
-    import image_analyzer as image_analyzer
+    import satellite_imagery_analyzer as image_analyzer
 
     r_ref,l_ref = image_analyzer.analyze('satellite_tile.png')
 
