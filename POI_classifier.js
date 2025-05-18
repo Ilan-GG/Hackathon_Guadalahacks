@@ -142,8 +142,8 @@ function determineThreshold(linkProperties) {
   const isHighway = ["1", "2"].includes(String(linkProperties.FUNC_CLASS));
 
   if (isHighway) return 70;
-  if (isUrban) return 30;
-  return 25;
+  if (isUrban) return 10;
+  return 40;
 }
 
 function checkNameMismatch(linkName, poiName) {
