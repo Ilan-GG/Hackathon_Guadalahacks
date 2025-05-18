@@ -5,15 +5,17 @@ import math
 
 from PIL import Image, ImageDraw
 
-poi_gdf = gpd.read_file("../POIs/POI_4815075_1.geojson")
-roads_gdf = gpd.read_file("../STREETS_NAV/SREETS_NAV_4815075.geojson")
+poi_gdf = gpd.read_file("POIs\POI_4815075_1.geojson")
+roads_gdf = gpd.read_file("STREETS_NAV\SREETS_NAV_4815075.geojson")
 
 poi_gdf = poi_gdf.to_crs(epsg=4326)
 roads_gdf = roads_gdf.to_crs(epsg=4326)
 
-longitude, latitude = poi_gdf.geometry.iloc[4].x, poi_gdf.geometry.iloc[4].y
+item = 18
 
-link_id = poi_gdf.iloc[4]["LINK_ID"] if "LINK_ID" in poi_gdf.columns else poi_gdf.iloc[4]["link_id"]
+longitude, latitude = poi_gdf.geometry.iloc[item].x, poi_gdf.geometry.iloc[item].y
+
+link_id = poi_gdf.iloc[item]["LINK_ID"] if "LINK_ID" in poi_gdf.columns else poi_gdf.iloc[item]["link_id"]
 
 # Buscar la geometría correspondiente en STREET
 line = roads_gdf[roads_gdf["link_id"] == link_id].geometry.values[0]
@@ -21,6 +23,8 @@ line = roads_gdf[roads_gdf["link_id"] == link_id].geometry.values[0]
 
 start_point = line.coords[0]       # (lon, lat)
 end_point = line.coords[-1]        # (lon, lat)
+
+all_points = list(line.coords)
 
 def lat_lon_to_tile(lat, lon, zoom):
     """
@@ -98,7 +102,7 @@ def get_satellite_tile(lat,lon,zoom,tile_format,api_key):
 ### Image Markers
 ##########################################################
 
-def plot_marker_on_image(image_path, corners, marker_lat_lon, output_path):
+def plot_marker_on_image(image_path, corners, marker_lat_lon, output_path,color):
     """
     :param image_path: Path to the satellite image.
     :param corners: A dictionary with 'top_left', 'top_right', 'bottom_left', 'bottom_right' lat-lon pairs.
@@ -131,12 +135,12 @@ def plot_marker_on_image(image_path, corners, marker_lat_lon, output_path):
     
     
     draw = ImageDraw.Draw(img)
-    marker_radius = 10
+    marker_radius = 8
     draw.ellipse(
         [(x_pixel - marker_radius, y_pixel - marker_radius),
          (x_pixel + marker_radius, y_pixel + marker_radius)],
-        fill='red',
-        outline='red'
+        fill=color,
+        outline=color
     )
     
     # Save the result
@@ -157,7 +161,7 @@ def plot_points_and_line(
     draw = ImageDraw.Draw(img)
     width, height = img.size
 
-    def lat_lon_to_pixel(lat, lon): 
+    def lat_lon_to_pixel(lon, lat): 
         # Longitude interpolation (x-coordinate)
         lon_span = corners['top_right'][1] - corners['top_left'][1]
         x_frac = (lon - corners['top_left'][1]) / lon_span if lon_span != 0 else 0
@@ -195,7 +199,7 @@ def plot_points_and_line(
 # STREET: { "type": "Feature", "properties": { "AR_AUTO": "Y", "AR_BUS": "Y", "AR_CARPOOL": "Y", "AR_DELIV": "Y", "AR_EMERVEH": "Y", "AR_MOTOR": "Y", "AR_PEDEST": "Y", "AR_TAXIS": "Y", "AR_TRAFF": "Y", "AR_TRUCKS": "Y", "BRIDGE": "N", "CONTRACC": "N", "COVERIND": "N0", "DIR_TRAVEL": "T", "DIVIDER": "N", "FERRY_TYPE": "H", "FROM_LANES": 0, "FRONTAGE": "Y", "FR_SPD_LIM": 0, "FUNC_CLASS": "4", "INDESCRIB": "N", "INTERINTER": "N", "LANE_CAT": "2", "link_id": 939199332, "LOW_MBLTY": "3", "MANOEUVRE": "N", "MULTIDIGIT": "N", "PAVED": "Y", "POIACCESS": "N", "PRIORITYRD": "N", "PRIVATE": "N", "PUB_ACCESS": "Y", "RAMP": "N", "ROUNDABOUT": "N", "SPEED_CAT": "6", "TOLLWAY": "N", "TO_LANES": 0, "TO_SPD_LIM": 40, "TUNNEL": "N", "UNDEFTRAFF": "N", "URBAN": "Y" }, "geometry": { "type": "LineString", "coordinates": [ [ -99.64464, 19.27013 ], [ -99.64272, 19.27055 ] ] } },
 
 # Define the parameters for the tile request
-api_key = 'API KEY'
+api_key = '<API KEY>'
 #latitude = 19.27055
 #longitude = -99.64272
 zoom_level = 16  # Zoom level
@@ -207,27 +211,44 @@ print(f"Latitud: {latitude}, Longitud: {longitude}")
 corners = get_satellite_tile(latitude,longitude,zoom_level,tile_format,api_key)
 print(corners)
 
-# POI Marker
+# Street Marker
 
+#points = [ [ 19.27013, -99.64464 ], [19.27055, -99.64272 ] ]
+#points = [[start_point[1], start_point[0]], [end_point[1], end_point[0]]]
+pointA = all_points[0]
+pointB = all_points[1]
+
+latref = pointA[1]
+lonref = pointA[0]
+
+while(len(all_points)>=2):
+    print("Puntos extraídos:", all_points)
+
+    plot_points_and_line(
+        "satellite_tile.png",
+        corners,
+        pointA,
+        pointB,
+        "satellite_tile.png"
+    )
+    
+    all_points.pop(0)
+    if(len(all_points)!=1):
+        pointA = all_points[0]
+        pointB = all_points[1]
 
 
 plot_marker_on_image(
     'satellite_tile.png',
     corners,
     (latitude,longitude),
-    'satellite_tile_marked.png'
+    'satellite_tile.png',
+    'red'
 )
-
-# Street Marker
-
-#points = [ [ 19.27013, -99.64464 ], [19.27055, -99.64272 ] ]
-points = [[start_point[1], start_point[0]], [end_point[1], end_point[0]]]
-print("Puntos extraídos:", points)
-
-plot_points_and_line(
-    "satellite_tile_marked.png",
+plot_marker_on_image(
+    'satellite_tile.png',
     corners,
-    points[0],
-    points[1],
-    "satellite_tile_marked.png"
+    (latref,lonref),
+    'satellite_tile.png',
+    'white'
 )
