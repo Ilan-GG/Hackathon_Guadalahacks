@@ -7,7 +7,8 @@ This repository contains a geospatial data validation system developed for HERE 
 ## 📌 Project Description
 
 The project focuses on:
-- **POI Validation**: Checking POI positions against street geometries using percentage-based references
+- **POI Validation**:
+Applies a series of deterministic validation rules (e.g., distance from interpolated point, street name mismatches, side orientation issues) to automatically flag POIs with potential violations and assign explanatory scenarios.
 - **Satellite Imagery Analysis**: Detecting structures around POIs to validate their existence
 - **Data Classification**: Categorizing POIs into scenarios based on positional accuracy and naming consistency
 - **Duplicate Detection**: Identifying and reporting duplicate POI entries
@@ -21,7 +22,7 @@ Key technologies used:
 ## 🛠 Technologies Used
 
 - **Core**: 
-  - Node.js (JavaScript/TypeScript) 
+  - Node.js (JavaScript) 
   - Python (for image analysis)
 - **Geospatial**: 
   - Turf.js 
