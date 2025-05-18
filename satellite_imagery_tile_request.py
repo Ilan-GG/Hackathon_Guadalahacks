@@ -1,7 +1,26 @@
+import pandas as pd
+import geopandas as gpd
 import requests
 import math
 
 from PIL import Image, ImageDraw
+
+poi_gdf = gpd.read_file("../POIs/POI_4815075.geojson")
+roads_gdf = gpd.read_file("../STREETS_NAV/SREETS_NAV_4815075.geojson")
+
+poi_gdf = poi_gdf.to_crs(epsg=4326)
+roads_gdf = roads_gdf.to_crs(epsg=4326)
+
+longitude, latitude = poi_gdf.geometry.iloc[4].x, poi_gdf.geometry.iloc[4].y
+
+link_id = poi_gdf.iloc[4]["LINK_ID"] if "LINK_ID" in poi_gdf.columns else poi_gdf.iloc[4]["link_id"]
+
+# Buscar la geometría correspondiente en STREET
+line = roads_gdf[roads_gdf["link_id"] == link_id].geometry.values[0]
+
+
+start_point = line.coords[0]       # (lon, lat)
+end_point = line.coords[-1]        # (lon, lat)
 
 def lat_lon_to_tile(lat, lon, zoom):
     """
@@ -176,12 +195,13 @@ def plot_points_and_line(
 # STREET: { "type": "Feature", "properties": { "AR_AUTO": "Y", "AR_BUS": "Y", "AR_CARPOOL": "Y", "AR_DELIV": "Y", "AR_EMERVEH": "Y", "AR_MOTOR": "Y", "AR_PEDEST": "Y", "AR_TAXIS": "Y", "AR_TRAFF": "Y", "AR_TRUCKS": "Y", "BRIDGE": "N", "CONTRACC": "N", "COVERIND": "N0", "DIR_TRAVEL": "T", "DIVIDER": "N", "FERRY_TYPE": "H", "FROM_LANES": 0, "FRONTAGE": "Y", "FR_SPD_LIM": 0, "FUNC_CLASS": "4", "INDESCRIB": "N", "INTERINTER": "N", "LANE_CAT": "2", "link_id": 939199332, "LOW_MBLTY": "3", "MANOEUVRE": "N", "MULTIDIGIT": "N", "PAVED": "Y", "POIACCESS": "N", "PRIORITYRD": "N", "PRIVATE": "N", "PUB_ACCESS": "Y", "RAMP": "N", "ROUNDABOUT": "N", "SPEED_CAT": "6", "TOLLWAY": "N", "TO_LANES": 0, "TO_SPD_LIM": 40, "TUNNEL": "N", "UNDEFTRAFF": "N", "URBAN": "Y" }, "geometry": { "type": "LineString", "coordinates": [ [ -99.64464, 19.27013 ], [ -99.64272, 19.27055 ] ] } },
 
 # Define the parameters for the tile request
-api_key = '<API KEY>'
-latitude = 19.27055
-longitude = -99.64272
+api_key = 'rXWmkN3wAortCL7We8L4BfUIl9NAbIH5qqVrJ67yHBc'
+#latitude = 19.27055
+#longitude = -99.64272
 zoom_level = 16  # Zoom level
 tile_size = 512  # Tile size in pixels
 tile_format = 'png'  # Tile format
+print(f"Latitud: {latitude}, Longitud: {longitude}")
 
 # Execute request and save tile
 corners = get_satellite_tile(latitude,longitude,zoom_level,tile_format,api_key)
@@ -200,7 +220,9 @@ plot_marker_on_image(
 
 # Street Marker
 
-points = [ [ 19.27013, -99.64464 ], [19.27055, -99.64272 ] ]
+#points = [ [ 19.27013, -99.64464 ], [19.27055, -99.64272 ] ]
+points = [[start_point[1], start_point[0]], [end_point[1], end_point[0]]]
+print("Puntos extraídos:", points)
 
 plot_points_and_line(
     "satellite_tile_marked.png",
