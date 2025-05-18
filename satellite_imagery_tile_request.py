@@ -11,7 +11,7 @@ roads_gdf = gpd.read_file("STREETS_NAV\SREETS_NAV_4815075.geojson")
 poi_gdf = poi_gdf.to_crs(epsg=4326)
 roads_gdf = roads_gdf.to_crs(epsg=4326)
 
-item = 18
+item = 40
 
 longitude, latitude = poi_gdf.geometry.iloc[item].x, poi_gdf.geometry.iloc[item].y
 
@@ -202,7 +202,7 @@ def plot_points_and_line(
 api_key = '<API KEY>'
 #latitude = 19.27055
 #longitude = -99.64272
-zoom_level = 16  # Zoom level
+zoom_level = 17  # Zoom level
 tile_size = 512  # Tile size in pixels
 tile_format = 'png'  # Tile format
 print(f"Latitud: {latitude}, Longitud: {longitude}")
@@ -250,5 +250,28 @@ plot_marker_on_image(
     corners,
     (latref,lonref),
     'satellite_tile.png',
-    'white'
+    'purple'
 )
+
+import image_analyzer as image_analyzer
+
+r_ref,l_ref = image_analyzer.analyze('satellite_tile.png')
+
+poi_ref = poi_gdf.iloc[item]['POI_ST_SD']
+
+if (poi_ref == 'L'):
+    if(l_ref):
+        print("Case 4, it exists")
+    else:
+        if(r_ref):
+            print("Case 2, it is possibly in the other side")
+        else:
+            print("Case 1, It possibly doesn't exist")
+else:
+    if(r_ref):
+        print("Case 4, it exists")
+    else:
+        if(l_ref):
+            print("Case 2, it is possibly in the other side")
+        else:
+            print("Case 1, It possibly doesn't exist")
