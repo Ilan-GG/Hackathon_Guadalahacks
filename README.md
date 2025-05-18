@@ -42,7 +42,7 @@ Key technologies used:
    cd Hackathon_Guadalahacks
 2. **Install dependencies**:
    ```bash
-   npm install @turf/turf xlsx
+   npm install turf xlsx
    pip install opencv-python scipy pandas geopandas
 4. **Configure the API Keys**:
    Add your HERE Maps API key in satellite_imagery_tile_request.py
