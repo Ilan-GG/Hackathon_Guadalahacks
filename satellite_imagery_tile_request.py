@@ -195,7 +195,7 @@ def plot_points_and_line(
 # STREET: { "type": "Feature", "properties": { "AR_AUTO": "Y", "AR_BUS": "Y", "AR_CARPOOL": "Y", "AR_DELIV": "Y", "AR_EMERVEH": "Y", "AR_MOTOR": "Y", "AR_PEDEST": "Y", "AR_TAXIS": "Y", "AR_TRAFF": "Y", "AR_TRUCKS": "Y", "BRIDGE": "N", "CONTRACC": "N", "COVERIND": "N0", "DIR_TRAVEL": "T", "DIVIDER": "N", "FERRY_TYPE": "H", "FROM_LANES": 0, "FRONTAGE": "Y", "FR_SPD_LIM": 0, "FUNC_CLASS": "4", "INDESCRIB": "N", "INTERINTER": "N", "LANE_CAT": "2", "link_id": 939199332, "LOW_MBLTY": "3", "MANOEUVRE": "N", "MULTIDIGIT": "N", "PAVED": "Y", "POIACCESS": "N", "PRIORITYRD": "N", "PRIVATE": "N", "PUB_ACCESS": "Y", "RAMP": "N", "ROUNDABOUT": "N", "SPEED_CAT": "6", "TOLLWAY": "N", "TO_LANES": 0, "TO_SPD_LIM": 40, "TUNNEL": "N", "UNDEFTRAFF": "N", "URBAN": "Y" }, "geometry": { "type": "LineString", "coordinates": [ [ -99.64464, 19.27013 ], [ -99.64272, 19.27055 ] ] } },
 
 # Define the parameters for the tile request
-api_key = 'rXWmkN3wAortCL7We8L4BfUIl9NAbIH5qqVrJ67yHBc'
+api_key = 'API KEY'
 #latitude = 19.27055
 #longitude = -99.64272
 zoom_level = 16  # Zoom level
