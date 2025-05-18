@@ -38,7 +38,7 @@ Key technologies used:
 - **APIs**: 
   - HERE Maps API
     
-  ## 🚀 Installation & Usage
+## 🚀 Installation & Usage
 
 1. **Clone the repository**:
    ```bash
