@@ -49,7 +49,7 @@ Key technologies used:
 6. **Run the pipeline**:
 
 ## 📊 Key Features
-** POI Classification **
+- ** POI Classification **
 
 - **Scenario 1**: No POI in reality 
 - **Scenario 2**: Incorrect POI position
@@ -57,12 +57,12 @@ Key technologies used:
 - **Scenario 4**: Valid POI
 - **Additional solution**: Export duplicates POI's
 
-** Satellite Analysis **
+- ** Satellite Analysis **
 
 - Detects structures on both sides of roads  
 - Validates POI existence based on imagery  
 
-** Duplicate Detection **
+- ** Duplicate Detection **
 
 - Identifies POIs with identical coordinates/names  
 - Exports duplicates to CSV  
