@@ -9,10 +9,10 @@ This repository contains a geospatial data validation system developed for HERE 
 The project focuses on:
 - **POI Validation**:
 Applies a series of deterministic validation rules (e.g., distance from interpolated point, street name mismatches, side orientation issues) to automatically flag POIs with potential violations and assign explanatory scenarios.
-- **Satellite Imagery Analysis**: Detecting structures around POIs to validate their existence using a Machine Learning Model
-- **Data Classification**: Categorizing POIs into scenarios based on positional accuracy and naming consistency
-- **Duplicate Detection**: Identifying and reporting duplicate POI entries.
-- **Real-Time Feedback**: Generating files from analysis.
+- **Satellite Imagery Analysis**: Utilizes a Machine Learning model to detect structures surrounding POI locations, verifying their presence and enhancing positional accuracy.
+- **Data Classification**: Assigns POIs to predefined scenarios based on spatial accuracy and naming consistency.
+- **Duplicate Detection**: Automatically identifies and reports POIs with duplicate coordinates or names.
+- **Real-Time Feedback**: Produces output files summarizing validation results, classified scenarios, and detected duplicates for downstream review and correction.
 
 Key technologies used:
 - Geospatial processing with Turf.js and GeoJSON
